@@ -1,0 +1,22 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+**/.vscode/**
+**/.cache/**
+**/.idea/**
+**/.vim/**
+
+**/conan/**
+**/build/**
+**/bin/**
+**/.arti.template*
+
+**/output.txt/**
+
+[Ss]olutions.md
