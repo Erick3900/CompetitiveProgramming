@@ -1,0 +1,13 @@
+{
+    version: "1.0.0",
+
+    configurations: [
+        {
+            name: "Run cf",
+            cwd: "${workspace_folder}",
+            program: "$(dirname ${file})/bin/${file_stem} < ${workspace_folder}/in"
+            default: true,
+            depends: [ "Build" ]
+        }
+    ]
+}
