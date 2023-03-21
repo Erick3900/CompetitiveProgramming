@@ -1,6 +1,6 @@
-// ICPC Gran Premio México 2022 Fecha 1
+// 2022_GPM1
 // JeffreysAmbition
-// URL: https://codeforces.com/problemset/gymProblem/103708/J
+// URL: https://codeforces.com/gym/103708/problem/J
 // Date: Thursday March 09, 2023
 //
 // Author: Erick Saúl
