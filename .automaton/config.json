@@ -1,8 +1,8 @@
 [
     {
-        name: "build_mode",
-        label: "Build Mode",
-        choices: ["Debug", "Release"],
-        default: "Release"
+        "name": "build_mode",
+        "label": "Build Mode",
+        "choices": ["Debug", "Release"],
+        "default": "Release"
     }
 ]

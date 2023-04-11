@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+FULL_PATH=$1
+FILENAME=$(basename $FULL_PATH)
+FILE_PATH=$(dirname $FULL_PATH)
+
+FILE_STEM=${FILENAME%.*}
+
+CMD="$FILE_PATH/bin/$FILE_STEM"
+
+if ! [ -z "$2" ]; then
+    INPUT=$2
+
+    if [ -f "$FILE_PATH/$FILE_STEM.in" ]; then
+        INPUT="$FILE_PATH/$FILE_STEM.in"
+    fi
+
+    CMD+=" < $INPUT"
+fi
+
+if ! [ -z "$3" ]; then
+    CMD+=" > $3"
+fi
+
+bash -c "$CMD"

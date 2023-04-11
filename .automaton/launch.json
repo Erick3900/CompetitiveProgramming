@@ -1,23 +1,24 @@
 {
-    version: "1.0.0",
-
-    configurations: [
+    "version": "1.0.0",
+    "configurations": [
         {
-            name: "Run cf",
-            cwd: "${workspace_folder}",
-            program: "$(dirname ${file})/bin/${file_stem} < ${workspace_folder}/in"
-            default: true,
-            depends: [ "Build" ]
+            "name": "Run cf",
+            "cwd": "${workspace_folder}",
+            "program": "./run ${file} ./in",
+            "default": true,
+            "depends": [
+                "Build"
+            ]
         },
         {
-            name: "Copy",
-            cwd: "${workspace_folder}",
-            program: "/opt/arti/sub/bin/arti-sub -I ${workspace_folder}/include -f ${file} | xclip -sel clip"
+            "name": "Copy",
+            "cwd": "${workspace_folder}",
+            "program": "/opt/arti/sub/bin/arti-sub -I ${workspace_folder}/include -f ${file} | xclip -sel clip"
         },
         {
-            name: "Arti-Sub",
-            cwd: "${workspace_folder}",
-            program: "/opt/arti/sub/bin/arti-sub -I ${workspace_folder}/include -f ${file} -o ${file}"
+            "name": "Arti-Sub",
+            "cwd": "${workspace_folder}",
+            "program": "/opt/arti/sub/bin/arti-sub -I ${workspace_folder}/include -f ${file} -o ${file}"
         }
     ]
 }
