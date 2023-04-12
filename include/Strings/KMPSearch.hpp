@@ -2,11 +2,9 @@
 
 #include <bits/stdc++.h>
 
-std::vector<int> KMPFunction(const std::string &pattern) {
+void KMPFunction(int *kmp, const std::string &pattern) {
     int i = 0, j = -1;
     int m = pattern.size();
-
-    std::vector<int> kmp(m, 0);
 
     kmp[0] = -1;
 
@@ -20,7 +18,12 @@ std::vector<int> KMPFunction(const std::string &pattern) {
 
         kmp[i] = j;
     }
-    
-    return kmp;
 }
 
+std::vector<int> KMPFunction(const std::string &pattern) {
+    std::vector<int> kmp(pattern.size(), 0);
+    
+    KMPFunction(kmp.data(), pattern);
+
+    return kmp;
+}

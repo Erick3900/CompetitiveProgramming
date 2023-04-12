@@ -1,7 +1,7 @@
 // Kattis
-// BurrowsWheeler 
-// https://open.kattis.com/problems/burrowswheeler
-// Date: Monday April 10, 2023
+// PowerStrings 
+// https://open.kattis.com/problems/powerstrings
+// Date: Wednesday April 12, 2023
 //
 // Author: Erick Saúl
 // Github: @Erick3900
@@ -21,25 +21,32 @@
 #    define debug(x)
 #endif
 
-#include "Strings/SuffixArray.hpp"
+#include "Strings/ZSearch.hpp"
 
 int main(int argc, char *argv[]) {
     std::ios_base::sync_with_stdio(false), 
         std::cin.tie(nullptr), 
         std::cout.tie(nullptr);
 
-    std::string input;
+    std::string line;
+    
+    while (std::getline(std::cin, line) && line != ".") {
+        auto z = ZFunction(line);
 
-    while (std::getline(std::cin, input)) {
-        auto suffixArray = SuffixArray(input + input);
+        auto rs = 0;
 
-        for (std::size_t i = 0; i < suffixArray.size(); ++i) {
-            if (suffixArray[i] < input.length()) {
-                auto c = ((suffixArray[i] == 0) ? input.length() : suffixArray[i]) - 1;
-                std::cout << input[c];
+        for (int i = 0; i < line.size(); ++i) {
+            if (z[i] == ((int) line.size() - i)) {
+                rs = i;
+                break;
             }
         }
-        std::cout << '\n';
+
+        if (rs == 0) {
+            std::cout << 1 << '\n';
+            continue;
+        }
+
+        std::cout << (line.size() / rs) << '\n';
     }
 }
-

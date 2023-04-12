@@ -1,7 +1,7 @@
-// Kattis
-// BurrowsWheeler 
-// https://open.kattis.com/problems/burrowswheeler
-// Date: Monday April 10, 2023
+// UVA
+// Zapping 
+// https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3912
+// Date: Wednesday April 12, 2023
 //
 // Author: Erick Saúl
 // Github: @Erick3900
@@ -21,25 +21,18 @@
 #    define debug(x)
 #endif
 
-#include "Strings/SuffixArray.hpp"
-
 int main(int argc, char *argv[]) {
     std::ios_base::sync_with_stdio(false), 
         std::cin.tie(nullptr), 
         std::cout.tie(nullptr);
 
-    std::string input;
+    int n, m;
 
-    while (std::getline(std::cin, input)) {
-        auto suffixArray = SuffixArray(input + input);
+    while ((std::cin >> n >> m) && (n != -1 && m != -1)) {
+        auto diffRight = ((m - n) % 100 + 100) % 100;
+        auto diffLeft = ((n - m) % 100 + 100) % 100;
 
-        for (std::size_t i = 0; i < suffixArray.size(); ++i) {
-            if (suffixArray[i] < input.length()) {
-                auto c = ((suffixArray[i] == 0) ? input.length() : suffixArray[i]) - 1;
-                std::cout << input[c];
-            }
-        }
-        std::cout << '\n';
+        std::cout << std::min(diffLeft, diffRight) << '\n';
     }
-}
 
+}

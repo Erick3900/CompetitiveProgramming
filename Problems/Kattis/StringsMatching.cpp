@@ -21,10 +21,9 @@
 #    define debug(x)
 #endif
 
-#include "Strings/ZSearch.hpp"
+// #include "Strings/ZSearch.hpp"
 
-// KMP VERSION GIVES RUNTIME ERROR?
-// #include "Strings/KMPSearch.hpp"
+#include "Strings/KMPSearch.hpp"
 
 int main(int, char *[]) {
     std::ios_base::sync_with_stdio(false), 
@@ -33,36 +32,44 @@ int main(int, char *[]) {
 
     std::string pattern, text;
 
+    std::vector<int> data;
+
     while (std::getline(std::cin, pattern) && std::getline(std::cin, text)) {
-        auto z = ZFunction(pattern, text);
-        int sz = pattern.size();
+        // auto z = ZFunction(pattern, text);
+        // int sz = pattern.size();
 
-        for (int i = sz + 1; i < z.size(); ++i) {
-            if (z[i] == sz) {
-                std::cout << (i - sz - 1) << ' ';
-            }
-        }
-
-        // int m = pattern.size();
-        // int n = text.size();
-
-        // auto kmp = KMPFunction(pattern);
-
-        // int i = 0, j = 0;
-
-        // while (i < n) {
-        //     while (j >= 0 && pattern[j] != text[i]) {
-        //         j = kmp[j];
-        //     }
-
-        //     ++i;
-        //     ++j;
-
-        //     if (j == m) {
-        //         std::cout << (i - j) << ' ';
-        //         j = kmp[j];
+        // for (int i = sz + 1; i < z.size(); ++i) {
+        //     if (z[i] == sz) {
+        //         std::cout << (i - sz - 1) << ' ';
         //     }
         // }
+
+        int m = pattern.size();
+        int n = text.size();
+
+        if (data.capacity() < pattern.length()) {
+            data.reserve(pattern.length());
+            data.resize(pattern.length(), 0);
+        }
+
+        KMPFunction(data.data(), pattern);
+        auto &kmp = data;
+
+        int i = 0, j = 0;
+
+        while (i < n) {
+            while (j >= 0 && pattern[j] != text[i]) {
+                j = kmp[j];
+            }
+
+            ++i;
+            ++j;
+
+            if (j == m) {
+                std::cout << (i - j) << ' ';
+                j = kmp[j];
+            }
+        }
 
         std::cout << "\n";
     }

@@ -1,7 +1,7 @@
-// Kattis
-// BurrowsWheeler 
-// https://open.kattis.com/problems/burrowswheeler
-// Date: Monday April 10, 2023
+// CSES/Strings
+// FindingPeriods
+// https://cses.fi/problemset/task/1733
+// Date: Wednesday April 12, 2023
 //
 // Author: Erick Saúl
 // Github: @Erick3900
@@ -21,25 +21,24 @@
 #    define debug(x)
 #endif
 
-#include "Strings/SuffixArray.hpp"
+#include "Strings/ZSearch.hpp"
 
 int main(int argc, char *argv[]) {
     std::ios_base::sync_with_stdio(false), 
         std::cin.tie(nullptr), 
         std::cout.tie(nullptr);
+    
+    std::string line;
+   
+    std::cin >> line;
 
-    std::string input;
+    auto z = ZFunction(line);
 
-    while (std::getline(std::cin, input)) {
-        auto suffixArray = SuffixArray(input + input);
-
-        for (std::size_t i = 0; i < suffixArray.size(); ++i) {
-            if (suffixArray[i] < input.length()) {
-                auto c = ((suffixArray[i] == 0) ? input.length() : suffixArray[i]) - 1;
-                std::cout << input[c];
-            }
+    for (int i = 0; i < line.size(); ++i) {
+        if (z[i] == ((int) line.size() - i)) {
+            std::cout << i << ' ';
         }
-        std::cout << '\n';
     }
-}
 
+    std::cout << line.size() << '\n';
+}

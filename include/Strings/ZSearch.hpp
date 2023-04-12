@@ -2,9 +2,7 @@
 
 #include <bits/stdc++.h>
 
-std::vector<int> ZFunction(const std::string &pat, const std::string &txt) {
-    const std::string str{ pat + '#' + txt };
-
+std::vector<int> ZFunction(std::string_view str) {
     int n = str.size();
     
     std::vector<int> z(n, 0);
@@ -23,4 +21,8 @@ std::vector<int> ZFunction(const std::string &pat, const std::string &txt) {
     }
 
     return z;
+}
+
+std::vector<int> ZFunction(const std::string &pat, const std::string &txt) {
+    return ZFunction(pat + '#' + txt);
 }
