@@ -1,7 +1,7 @@
-// UVA Online Judge
-// Zapping 
-// https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3912
-// Date: Wednesday April 12, 2023
+// CSES/RangeQueries
+// StaticRangeSumQueries 
+// https://cses.fi/problemset/task/1646
+// Date: Thursday April 13, 2023
 //
 // Author: Erick Saúl
 // Github: @Erick3900
@@ -28,11 +28,26 @@ int main(int argc, char *argv[]) {
 
     int n, m;
 
-    while ((std::cin >> n >> m) && (n != -1 && m != -1)) {
-        auto diffRight = ((m - n) % 100 + 100) % 100;
-        auto diffLeft = ((n - m) % 100 + 100) % 100;
+    std::cin >> n >> m;
 
-        std::cout << std::min(diffLeft, diffRight) << '\n';
+    std::vector<int64_t> nums(n);
+
+    for (auto &e : nums) {
+        std::cin >> e;
+    }
+
+    std::vector<int64_t> prefixSum(n + 1, 0);
+
+    for (int i = 1; i <= n; ++i) {
+        prefixSum[i] = prefixSum[i - 1] + nums[i - 1];
+    }
+
+    int l, r;
+
+    while (m--) {
+        std::cin >> l >> r;
+
+        std::cout << (prefixSum[r] - prefixSum[l - 1]) << '\n';
     }
 
 }

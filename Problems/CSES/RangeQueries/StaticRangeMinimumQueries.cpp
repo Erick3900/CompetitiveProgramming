@@ -1,7 +1,7 @@
-// UVA Online Judge
-// Zapping 
-// https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3912
-// Date: Wednesday April 12, 2023
+// RangeQueries
+// StaticRangeMinimumQueries 
+// https://cses.fi/problemset/task/1647
+// Date: Thursday April 13, 2023
 //
 // Author: Erick Saúl
 // Github: @Erick3900
@@ -21,18 +21,29 @@
 #    define debug(x)
 #endif
 
+#include "DataStructures/SegmentTree.hpp"
+
 int main(int argc, char *argv[]) {
     std::ios_base::sync_with_stdio(false), 
         std::cin.tie(nullptr), 
         std::cout.tie(nullptr);
 
-    int n, m;
+    int n, m, l, r;
 
-    while ((std::cin >> n >> m) && (n != -1 && m != -1)) {
-        auto diffRight = ((m - n) % 100 + 100) % 100;
-        auto diffLeft = ((n - m) % 100 + 100) % 100;
+    std::cin >> n >> m;
 
-        std::cout << std::min(diffLeft, diffRight) << '\n';
+    std::vector<int> values(n);
+
+    for (auto &e : values) {
+        std::cin >> e;
     }
 
+    SegmentTree t{ values };
+
+    while (m--) {
+        std::cin >> l >> r;
+        --l, --r;
+
+        std::cout << t.query(l, r) << '\n';
+    }
 }

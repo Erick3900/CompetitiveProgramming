@@ -5,10 +5,12 @@
 struct UFDS {
     using Node = int32_t;
 
+    int32_t size;
     std::vector<Node> parents;
 
     UFDS(Node n) 
-        : parents(n) { 
+        : size(n)
+        , parents(n) { 
         std::iota(parents.begin(), parents.end(), 0);
     }
 
@@ -26,6 +28,7 @@ struct UFDS {
         
         if (toParent != fromParent) {
             parents[toParent] = fromParent;
+            --size;
         }
     }
 

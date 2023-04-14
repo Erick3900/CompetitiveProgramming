@@ -1,7 +1,7 @@
-// UVA Online Judge
-// Zapping 
-// https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3912
-// Date: Wednesday April 12, 2023
+// Kattis
+// FenwickTree 
+// https://open.kattis.com/problems/fenwick
+// Date: Thursday April 13, 2023
 //
 // Author: Erick Saúl
 // Github: @Erick3900
@@ -21,18 +21,32 @@
 #    define debug(x)
 #endif
 
+#include "DataStructures/FenwickTree.hpp"
+
 int main(int argc, char *argv[]) {
     std::ios_base::sync_with_stdio(false), 
         std::cin.tie(nullptr), 
         std::cout.tie(nullptr);
 
-    int n, m;
+    int n, m, i, d;
+    char q;
 
-    while ((std::cin >> n >> m) && (n != -1 && m != -1)) {
-        auto diffRight = ((m - n) % 100 + 100) % 100;
-        auto diffLeft = ((n - m) % 100 + 100) % 100;
+    std::cin >> n >> m;
 
-        std::cout << std::min(diffLeft, diffRight) << '\n';
+    FenwickTree t(n);
+
+    while (m--) {
+        std::cin >> q >> i;
+
+        if (q == '+') {
+            std::cin >> d;
+
+            t.updateAdd(i, d);
+        }
+        else if (q == '?') {
+            std::cout << t.querySum(i - 1) << '\n';
+        }
+        else assert(false);
     }
 
 }
