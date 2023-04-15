@@ -21,104 +21,165 @@
 #    define debug(x)
 #endif
 
-// File: 'DataStructures/SegmentTree.hpp'
+// File: 'DataStructures/SegmentTree.hpp' // C++11 Version
 
-inline int64_t STMin(int64_t a, int64_t b) {
-    return std::min(a, b);
-}
-
-inline int64_t STMax(int64_t a, int64_t b) {
-    return std::max(a, b);
-}
-
-inline int64_t eval(int64_t a, int64_t b) {
+inline int FTaskISum(int a, int b) {
     return a + b;
 }
 
-template <int64_t neutro = std::numeric_limits<int64_t>::max()>
+inline int FTaskIMin(int a, int b) {
+    return std::min(a, b);
+}
+
+inline int FTaskIMax(int a, int b) {
+    return std::max(a, b);
+}
+
+template <typename Type>
+using FTast_t = Type (*)(Type, Type);
+
+template <
+    typename Type = int, 
+    typename FTask = FTast_t<Type>
+>
 struct SegmentTree {
-    int n;
-    std::vector<int64_t> tree;
+    std::size_t n;
+    std::vector<Type> tree;
 
-    SegmentTree() 
+    Type Neutral;
+    FTask eval;
+
+    SegmentTree(FTask &&task, Type neutro)
         : n(0)
-        , tree() {}
+        , tree{}
+        , Neutral(neutro)
+        , eval(task) {}
 
-    SegmentTree(const std::vector<int> &values)
+    SegmentTree(FTask &&task, const std::vector<Type> &values) 
         : n(values.size())
-        , tree(4 * n, 0) {
-        build(values);
+        , tree(4 * n, Neutral)
+        , eval(task) {
+        build(values, [] (const Type &t) -> Type { return t; });
     }
 
-    void build(const std::vector<int> &values) {
-        if (tree.size() < values.size()) {
+    template <typename IType, typename FTransform>
+    SegmentTree(FTask &&task, const std::vector<IType> &values, FTransform &&transform) 
+        : n(values.size())
+        , tree(4 * n, Neutral)
+        , eval(task) {
+        build(values, std::forward<FTransform>(transform));
+    }
+    
+    void build(const std::vector<Type> &values) {
+        build(values, [] (const Type &t) -> Type { return t; });
+    }
+
+    template <typename IType, typename FTransform>
+    void build(const std::vector<IType> &values, FTransform &&transform) {
+        if (tree.size() != (values.size() * 4)) {
             n = values.size();
-            tree.resize(4 * n, 0);
+            tree.resize(4 * n, Neutral);
         }
 
-        std::function<void(int, int, int)> self;
-        self = [&] (int i, int itl, int itr) -> void {
+        std::function<void (int, int, int)> build_impl;
+        build_impl = [&] (int i, int itl, int itr) -> void {
             if (itl == itr) {
-                tree[i] = values[itl];
+                tree[i] = transform(values[itl]);
+                return;
             }
-            else {
-                int mid = itl + ((itr - itl) / 2);
 
-                self(i * 2, itl, mid);
-                self(i * 2 + 1, mid + 1, itr);
+            int mid = itl + ((itr - itl) >> 1);
 
-                tree[i] = eval(tree[i * 2], tree[i * 2 + 1]);
-            }
+            build_impl(i << 1, itl, mid);
+            build_impl((i << 1) + 1, mid + 1, itr);
+
+            tree[i] = eval(tree[i << 1], tree[(i << 1) + 1]);
         };
 
-        self(1, 0, n - 1);
+        build_impl(1, 0, n - 1);
     }
 
-    int64_t query(int l, int r) {
-        std::function<int64_t(int, int, int, int, int)> self;
-        self = [&] (int i, int tl, int tr, int l, int r) -> int64_t {
+    Type query(int l, int r) {
+        std::function<Type(int, int, int, int, int)> query_impl;
+        query_impl = [&] (int i, int itl, int itr, int l, int r) -> Type {
             if (l > r) {
-                return neutro;
+                return Neutral;
             }
 
-            if (l == tl && r == tr) {
+            if (l == itl && r == itr) {
                 return tree[i];
             }
 
-            int mid = tl + (tr - tl) / 2;
+            int mid = itl + ((itr - itl) >> 1);
 
             return eval(
-                self(i * 2, tl, mid, l, std::min(r, mid)),
-                self(i * 2 + 1, mid + 1, tr, std::max(l, mid + 1), r)
+                query_impl(i << 1, itl, mid, l, std::min(r, mid)),
+                query_impl((i << 1) + 1, mid + 1, itr, std::max(l, mid + 1), r)
             );
         };
 
-        return self(1, 0, n - 1, l, r);
+        return query_impl(1, 0, n - 1, l, r);
     }
 
-    void update(int idx, int64_t newVal) {
-        std::function<void(int, int, int)> self;
-        self = [&] (int i, int itl, int itr) -> void {
+    void update(int idx, Type newVal) {
+        std::function <void (int, int, int)> update_impl;
+        update_impl = [&, val = std::move(newVal)] (int i, int itl, int itr) -> void {
             if (itl == itr) {
-                tree[i] = newVal;
+                tree[i] = std::move(val);
+                return;
+            }
+
+            int mid = itl + ((itr - itl) >> 1);
+
+            if (idx <= mid) {
+                update_impl(i << 1, itl, mid);
             }
             else {
-                int mid = itl + (itr - itl) / 2;
-
-                if (idx <= mid) {
-                    self(i * 2, itl, mid);
-                }
-                else {
-                    self(i * 2 + 1, mid + 1, itr);
-                }
-
-                tree[i] = eval(tree[i * 2], tree[i * 2 + 1]);
+                update_impl((i << 1) + 1, mid + 1, itr);
             }
+
+            tree[i] = eval(tree[i << 1], tree[(i << 1) + 1]);
         };
 
-        self(1, 0, n - 1);
+        update_impl(1, 0, n - 1);
+    }
+
+    template <typename IType, typename FTransform>
+    void update(int idx, IType newVal, FTransform &&transform) {
+        std::function <void (int, int, int)> update_impl;
+        update_impl = [&, val = std::move(newVal)] (int i, int itl, int itr) -> void {
+            if (itl == itr) {
+                tree[i] = transform(val);
+                return;
+            }
+
+            int mid = itl + ((itr - itl) >> 1);
+
+            if (idx <= mid) {
+                update_impl(i << 1, itl, mid);
+            }
+            else {
+                update_impl((i << 1) + 1, mid + 1, itr);
+            }
+
+            tree[i] = eval(tree[i << 1], tree[(i << 1) + 1]);
+        };
+
+        update_impl(1, 0, n - 1);
     }
 };
+
+inline auto STreeIntMin() -> SegmentTree<> {
+    return SegmentTree<int>{ &FTaskIMin, std::numeric_limits<int>::max() };
+}
+
+inline auto STreeIntMax() -> SegmentTree<> {
+    return SegmentTree<int>{ &FTaskIMax, std::numeric_limits<int>::min() };
+}
+
+inline auto STreeIntSum() -> SegmentTree<> {
+    return SegmentTree<int>{ &FTaskISum, 0 };
+}
 
 // EOF: DataStructures/SegmentTree.hpp
 
@@ -143,7 +204,8 @@ int main(int argc, char *argv[]) {
             std::cin >> e;
         }
 
-        SegmentTree<0> t{ ohms };
+        auto t = STreeIntSum();
+        t.build(ohms);
 
         int l, r;
         std::string q;
@@ -164,4 +226,5 @@ int main(int argc, char *argv[]) {
     }
 
 }
+
 

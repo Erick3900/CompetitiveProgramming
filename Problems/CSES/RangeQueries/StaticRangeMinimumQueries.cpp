@@ -38,7 +38,8 @@ int main(int argc, char *argv[]) {
         std::cin >> e;
     }
 
-    SegmentTree t{ values };
+    auto t = STreeIntMin();
+    t.build(values);
 
     while (m--) {
         std::cin >> l >> r;
