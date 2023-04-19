@@ -1,5 +1,4 @@
 #pragma once
-
 #include <bits/stdc++.h>
 
 static void FFT(std::vector<std::complex<double>> &vec, bool invert) {

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <bits/stdc++.h>
 
 void KMPFunction(int *kmp, const std::string &pattern) {

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <bits/stdc++.h>
 
 std::vector<int> SuffixArray(const std::string &input) {

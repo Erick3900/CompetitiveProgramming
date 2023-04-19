@@ -1,5 +1,4 @@
 #pragma once
-
 #include <bits/stdc++.h>
 
 inline int FTaskISum(int a, int b) {
@@ -34,17 +33,19 @@ struct SegmentTree {
         , Neutral(neutro)
         , eval(task) {}
 
-    SegmentTree(FTask &&task, const std::vector<Type> &values) 
+    SegmentTree(FTask &&task, Type neutro, const std::vector<Type> &values) 
         : n(values.size())
         , tree(4 * n, Neutral)
+        , Neutral(neutro)
         , eval(task) {
         build(values, [] (const Type &t) -> Type { return t; });
     }
 
     template <typename IType, typename FTransform>
-    SegmentTree(FTask &&task, const std::vector<IType> &values, FTransform &&transform) 
+    SegmentTree(FTask &&task, Type neutro, const std::vector<IType> &values, FTransform &&transform) 
         : n(values.size())
         , tree(4 * n, Neutral)
+        , Neutral(neutro)
         , eval(task) {
         build(values, std::forward<FTransform>(transform));
     }

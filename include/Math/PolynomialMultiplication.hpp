@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Math/FFT.hpp"
 
 static std::vector<int32_t> PolynomialMultiplication(const std::vector<int32_t> &a, const std::vector<int32_t> &b) {

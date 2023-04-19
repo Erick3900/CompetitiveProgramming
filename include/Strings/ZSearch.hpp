@@ -1,5 +1,4 @@
 #pragma once
-
 #include <bits/stdc++.h>
 
 std::vector<int> ZFunction(std::string_view str) {
