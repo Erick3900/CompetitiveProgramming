@@ -9,15 +9,18 @@
 
 !run
 
+.arti/**.cache**
+
 **/.vscode/**
 **/.cache/**
 **/.idea/**
 **/.vim/**
 
-**/conan/**
 **/build/**
 **/bin/**
 **/.arti.template*
+
+contests-data/**
 
 **/output.txt/**
 

@@ -9,7 +9,6 @@
 // Mastodon: @alcachofa@social.linux.pizza
 
 #include <bits/stdc++.h>
-#include <queue>
 
 #define _DEBUG
 #ifdef _DEBUG

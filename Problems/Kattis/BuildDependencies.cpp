@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     const auto topologicalSort = [&]() -> std::list<std::string> {
         std::unordered_map<std::string, bool> visited;
         std::list<std::string> order;
-        
+
         std::function<void(const std::string &)> dfs;
 
         dfs = [&] (const std::string &node) -> void {

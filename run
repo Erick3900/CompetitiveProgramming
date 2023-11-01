@@ -22,4 +22,4 @@ if ! [ -z "$3" ]; then
     CMD+=" > $3"
 fi
 
-bash -c "$CMD"
+bash -c "/usr/bin/time $CMD"

@@ -3,7 +3,7 @@
 
 std::vector<int> ZFunction(std::string_view str) {
     int n = str.size();
-    
+
     std::vector<int> z(n, 0);
 
     int x = 0; 
